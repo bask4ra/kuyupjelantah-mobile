@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "902045358120",
+    "project_id": "kuyupjelantah-mobile",
+    "storage_bucket": "kuyupjelantah-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902045358120:android:b02fd098892f83e6893d1d",
+        "android_client_info": {
+          "package_name": "com.paramadina.kuyupjelantah"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiZlA51xjHsmOZfq5asJk8teObpT7ef-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
