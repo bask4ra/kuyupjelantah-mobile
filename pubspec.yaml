@@ -33,7 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: ^2.30.0
   firebase_auth: ^4.17.4
-  cloud_firestore: ^4.9.1
+  cloud_firestore: ^4.13.1
   firebase_storage: ^11.6.5
   image_picker: ^1.1.0
   font_awesome_flutter: ^10.7.0
@@ -79,6 +79,7 @@ flutter:
     - assets/images/trust.png
     - assets/images/howitwork.png
     - assets/images/schedulenow.png
+    - assets/images/water-bottle.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

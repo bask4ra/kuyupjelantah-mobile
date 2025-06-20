@@ -80,7 +80,10 @@ class _SideDrawerState extends State<SideDrawer> {
           drawerItem(context, Icons.dashboard, 'Dashboard', onTap: () {
             Navigator.pop(context);
           }),
-          drawerItem(context, Icons.schedule, 'Schedule'),
+          drawerItem(context, Icons.schedule, 'Schedule', onTap: () {
+            Navigator.pushNamed(context, '/schedule');
+          }),
+
           drawerItem(context, Icons.stars, 'Royalty Reward'),
           drawerItem(context, Icons.history, 'History', onTap: () {
             Navigator.pushNamed(context, '/history');

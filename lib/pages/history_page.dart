@@ -10,8 +10,9 @@ class WeeklyIncomeSummaryPage extends StatefulWidget {
 }
 
 class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
-  final PageController _pageController = PageController();
-  final PageController _weekSelectorController = PageController(viewportFraction: 0.5);
+  int _selectedWeekIndex = 0;
+
+  final List<String> _weekRanges = ['Mei 19 - 25', 'Mei 26 - Jun 1', 'Jun 2 - 8', 'Jul 2 - 8'];
 
   final List<List<IncomeData>> _weeklyData = [
     [
@@ -35,11 +36,12 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
     [
       IncomeData('Sen 2 Jun', 10000, 'Income'),
       IncomeData('Sel 3', 8000, 'Income'),
-      IncomeData('Rab 4', 12000, 'Income'),
+      IncomeData('Sel 3', 24000, 'Income'),
+      IncomeData('Rab 4', 50000, 'Income'),
       IncomeData('Kam 5', 9000, 'Income'),
       IncomeData('Jum 6', 4000, 'Income'),
       IncomeData('Sab 7', 5000, 'Income'),
-      IncomeData('Min 8', 0, 'Income'),
+      IncomeData('Min 8', 59000, 'Income'),
     ],
     [
       IncomeData('Sen 2 Jul', 10000, 'Income'),
@@ -52,12 +54,10 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
     ],
   ];
 
-  int _currentPage = 0;
-
-  final List<String> _weekRanges = ['Mei 19 - 25', 'Mei 26 - Jun 1', 'Jun 2 - 8', 'Jul 2 - 8'];
-
   @override
   Widget build(BuildContext context) {
+    final selectedData = _weeklyData[_selectedWeekIndex];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -79,67 +79,36 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
       ),
       body: Column(
         children: [
-          _buildSwipeableWeekSelector(),
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: _weeklyData.length,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
-                _weekSelectorController.animateToPage(
-                  index,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              },
-              itemBuilder: (context, index) => _buildWeeklySummary(_weeklyData[index]),
-            ),
-          ),
+          _buildWeekSelector(),
+          Expanded(child: _buildWeeklySummary(selectedData)),
         ],
       ),
     );
   }
 
-  Widget _buildSwipeableWeekSelector() {
+  Widget _buildWeekSelector() {
     return SizedBox(
       height: 60,
-      child: PageView.builder(
-        controller: _weekSelectorController,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         itemCount: _weekRanges.length,
-        onPageChanged: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-        },
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
-          final selected = index == _currentPage;
-          return Center(
-            child: GestureDetector(
-              onTap: () {
-                _pageController.animateToPage(
-                  index,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                margin: const EdgeInsets.symmetric(horizontal: 6),
-                decoration: BoxDecoration(
-                  color: selected ? Colors.orange : Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(20),
-                ),
+          final isSelected = index == _selectedWeekIndex;
+          return GestureDetector(
+            onTap: () => setState(() => _selectedWeekIndex = index),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.orange : Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
                 child: Text(
                   _weekRanges[index],
                   style: TextStyle(
-                    color: selected ? Colors.white : Colors.black,
+                    color: isSelected ? Colors.white : Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -161,14 +130,13 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
-            const Text('Total Pendapatan yang Diterima', style: TextStyle(fontSize: 16)),
+            const Text('Total Pendapatan', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 8),
             Text('Rp$total',
                 style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             Text('$totalOrders Pesanan Selesai', style: TextStyle(color: Colors.grey[600])),
             const SizedBox(height: 32),
-            const Text('Grafik Pendapatan yang Diterima', style: TextStyle(fontSize: 16)),
+            const Text('Grafik Pendapatan dan Pengeluaran', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 8),
             SizedBox(
               height: 200,
@@ -187,7 +155,7 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
                             space: 8,
                             child: Text(
                               NumberFormat.compact(locale: 'id_ID').format(value),
-                              style: const TextStyle(fontSize: 10),
+                              style: const TextStyle(fontSize: 7),
                             ),
                           );
                         },
@@ -202,9 +170,10 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
                             axisSide: meta.axisSide,
                             space: 6,
                             child: Text(
-                              index >= 0 && index < data.length ? data[index].day.substring(0, 3) : '',
+                              index >= 0 && index < data.length
+                                  ? data[index].day.substring(0, 3)
+                                  : '',
                               style: const TextStyle(fontSize: 10),
-                              textAlign: TextAlign.center,
                             ),
                           );
                         },
@@ -217,7 +186,11 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
                   barGroups: List.generate(
                     data.length,
                         (index) => BarChartGroupData(x: index, barRods: [
-                      BarChartRodData(toY: data[index].amount.toDouble(), color: Colors.orange, width: 16)
+                      BarChartRodData(
+                        toY: data[index].amount.toDouble(),
+                        color: Colors.orange,
+                        width: 16,
+                      )
                     ]),
                   ),
                 ),
