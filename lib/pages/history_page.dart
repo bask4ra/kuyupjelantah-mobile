@@ -11,6 +11,7 @@ class WeeklyIncomeSummaryPage extends StatefulWidget {
 
 class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
   final PageController _pageController = PageController();
+  final PageController _weekSelectorController = PageController(viewportFraction: 0.5);
 
   final List<List<IncomeData>> _weeklyData = [
     [
@@ -39,10 +40,21 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
       IncomeData('Jum 6', 4000, 'Income'),
       IncomeData('Sab 7', 5000, 'Income'),
       IncomeData('Min 8', 0, 'Income'),
-    ]
+    ],
+    [
+      IncomeData('Sen 2 Jul', 10000, 'Income'),
+      IncomeData('Sel 3', 8000, 'Income'),
+      IncomeData('Rab 4', 12000, 'Income'),
+      IncomeData('Kam 5', 9000, 'Income'),
+      IncomeData('Jum 6', 4000, 'Income'),
+      IncomeData('Sab 7', 5000, 'Income'),
+      IncomeData('Min 8', 13312, 'Income'),
+    ],
   ];
 
   int _currentPage = 0;
+
+  final List<String> _weekRanges = ['Mei 19 - 25', 'Mei 26 - Jun 1', 'Jun 2 - 8', 'Jul 2 - 8'];
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +79,21 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
       ),
       body: Column(
         children: [
-          _buildWeekSelector(),
+          _buildSwipeableWeekSelector(),
           Expanded(
             child: PageView.builder(
               controller: _pageController,
-              onPageChanged: (index) => setState(() => _currentPage = index),
               itemCount: _weeklyData.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+                _weekSelectorController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
               itemBuilder: (context, index) => _buildWeeklySummary(_weeklyData[index]),
             ),
           ),
@@ -81,28 +102,42 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
     );
   }
 
-  Widget _buildWeekSelector() {
-    final weekRanges = ['Mei 19 - 25', 'Mei 26 - Jun 1', 'Jun 2 - 8'];
+  Widget _buildSwipeableWeekSelector() {
     return SizedBox(
-      height: 50,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: weekRanges.length,
+      height: 60,
+      child: PageView.builder(
+        controller: _weekSelectorController,
+        itemCount: _weekRanges.length,
+        onPageChanged: (index) {
+          setState(() {
+            _currentPage = index;
+          });
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
         itemBuilder: (context, index) {
           final selected = index == _currentPage;
-          return GestureDetector(
-            onTap: () => _pageController.animateToPage(index,
-                duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: selected ? Colors.orange : Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Center(
+          return Center(
+            child: GestureDetector(
+              onTap: () {
+                _pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                  color: selected ? Colors.orange : Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: Text(
-                  weekRanges[index],
+                  _weekRanges[index],
                   style: TextStyle(
                     color: selected ? Colors.white : Colors.black,
                     fontWeight: FontWeight.bold,
@@ -129,7 +164,7 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
             const SizedBox(height: 16),
             const Text('Total Pendapatan yang Diterima', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 8),
-            Text('Rp${total.toString()}',
+            Text('Rp$total',
                 style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             Text('$totalOrders Pesanan Selesai', style: TextStyle(color: Colors.grey[600])),
             const SizedBox(height: 32),
@@ -189,47 +224,37 @@ class _WeeklyIncomeSummaryPageState extends State<WeeklyIncomeSummaryPage> {
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
-                'Transaction Detail',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16
-                )
-            ),
+            const Text('Transaction Detail',
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 8),
-            ...data.where((d) => d.amount > 0).map((d) => GestureDetector(
-              onTap: () {
-                print('Klik transaksi: ${d.day}');
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 6),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black, width: 1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.attach_money, color: Colors.orange),
-                        const SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(d.day, style: const TextStyle(fontSize: 14)),
-                            Text(d.category, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Text('Rp${d.amount}',
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                  ],
-                ),
+            ...data.where((d) => d.amount > 0).map((d) => Container(
+              margin: const EdgeInsets.symmetric(vertical: 6),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.black, width: 1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.attach_money, color: Colors.orange),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(d.day, style: const TextStyle(fontSize: 14)),
+                          Text(d.category,
+                              style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text('Rp${d.amount}',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                ],
               ),
             )),
           ],

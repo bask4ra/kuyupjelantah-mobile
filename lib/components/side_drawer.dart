@@ -11,33 +11,10 @@ class SideDrawer extends StatefulWidget {
 }
 
 class _SideDrawerState extends State<SideDrawer> {
-  String displayName = 'Guest';
-  String email = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserInfo();
-  }
-
-  Future<void> _loadUserInfo() async {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-
-      setState(() {
-        displayName = userDoc.data()?['name'] ?? 'Guest';
-        email = user.email ?? '';
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Drawer(
       backgroundColor: Colors.white,
       child: ListView(
@@ -54,34 +31,49 @@ class _SideDrawerState extends State<SideDrawer> {
           ),
           const SizedBox(height: 24),
 
-          // User info
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/settings');
-            },
-            child: Column(
-              children: [
-                const CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.grey,
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  displayName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
+          // User info (real-time)
+          if (user != null)
+            StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                final userData = snapshot.data?.data() as Map<String, dynamic>?;
+
+                final displayName = userData?['name'] ?? 'Guest';
+                final email = user.email ?? '';
+
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/settings');
+                  },
+                  child: Column(
+                    children: [
+                      const CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.grey,
+                        child: Icon(Icons.person, color: Colors.white),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        displayName,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      if (email.isNotEmpty)
+                        Text(
+                          email,
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                    ],
                   ),
-                ),
-                if (email.isNotEmpty)
-                  Text(
-                    email,
-                    style: const TextStyle(color: Colors.black54),
-                  ),
-              ],
+                );
+              },
             ),
-          ),
+
           const SizedBox(height: 32),
 
           // Menu
@@ -98,7 +90,10 @@ class _SideDrawerState extends State<SideDrawer> {
           const Divider(color: Colors.black12),
           const SizedBox(height: 16),
 
-          drawerItem(context, Icons.settings, 'Settings'),
+          drawerItem(context, Icons.settings, 'Settings', onTap: () {
+            Navigator.pushNamed(context, '/main-settings');
+          }),
+
           drawerItem(context, Icons.help_outline, 'FAQs'),
           drawerItem(context, Icons.logout, 'Sign Out', onTap: () async {
             await FirebaseAuth.instance.signOut();

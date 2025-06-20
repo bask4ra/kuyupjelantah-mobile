@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kuyupjelantah/pages/mainsettings_page.dart';
 import 'package:kuyupjelantah/pages/settings_page.dart';
 import 'firebase_options.dart';
 import 'pages/welcome_page.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/history': (context) => const WeeklyIncomeSummaryPage(),
         '/settings': (context) => const SettingsPage(),
+        '/main-settings': (context) => const MainSettingsPage(),
       },
     );
   }
