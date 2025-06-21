@@ -384,7 +384,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
-              child: const Text('Done', style: TextStyle(color: Colors.white)),
+              child: const Text('Close', style: TextStyle(color: Colors.white)),
             ),
           ),
         ],

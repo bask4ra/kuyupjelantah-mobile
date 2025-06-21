@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const WelcomePage(),
       routes: {
-        '/history': (context) => const WeeklyIncomeSummaryPage(),
+        '/history': (context) => const HistoryPage(),
         '/settings': (context) => const SettingsPage(),
         '/main-settings': (context) => const MainSettingsPage(),
         '/schedule': (context) => const SchedulePage(),
