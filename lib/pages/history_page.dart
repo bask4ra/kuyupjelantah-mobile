@@ -86,12 +86,19 @@ class _HistoryPageState extends State<HistoryPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: false,
+        title: const Text(
+          'History',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('History', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
-        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.date_range, color: Colors.black),
@@ -115,12 +122,12 @@ class _HistoryPageState extends State<HistoryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Total Pendapatan', style: TextStyle(fontSize: 16)),
+            const Text('Total Revenue', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 8),
             Text('Rp$total', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-            Text('$totalOrders Pesanan Selesai', style: TextStyle(color: Colors.grey[600])),
+            Text('$totalOrders Orders', style: TextStyle(color: Colors.grey[600])),
             const SizedBox(height: 32),
-            const Text('Grafik Pendapatan', style: TextStyle(fontSize: 16)),
+            const Text('Income Graphic', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 8),
             SizedBox(
               height: 200,

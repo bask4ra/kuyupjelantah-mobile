@@ -32,7 +32,6 @@ class _SideDrawerState extends State<SideDrawer> {
           ),
           const SizedBox(height: 24),
 
-          // User info (real-time)
           if (user != null)
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
@@ -84,8 +83,6 @@ class _SideDrawerState extends State<SideDrawer> {
           drawerItem(context, Icons.schedule, 'Schedule', onTap: () {
             Navigator.pushNamed(context, '/schedule');
           }),
-
-          drawerItem(context, Icons.stars, 'Royalty Reward'),
           drawerItem(context, Icons.history, 'History', onTap: () {
             Navigator.pushNamed(context, '/history');
           }),
@@ -97,7 +94,6 @@ class _SideDrawerState extends State<SideDrawer> {
           drawerItem(context, Icons.settings, 'Settings', onTap: () {
             Navigator.pushNamed(context, '/main-settings');
           }),
-
           drawerItem(context, Icons.help_outline, 'FAQs', onTap: () {
             Navigator.pushNamed(context, '/faqscreen');
           }),

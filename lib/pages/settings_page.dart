@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ' Account Settings',
           style: TextStyle(
             color: Colors.black,
-            fontWeight: FontWeight.bold, // Bold title
+            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Colors.white,

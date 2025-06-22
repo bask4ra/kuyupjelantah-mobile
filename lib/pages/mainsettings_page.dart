@@ -29,7 +29,6 @@ class MainSettingsPage extends StatelessWidget {
       }),
       _SettingsItem(Icons.star, 'Rate App', _launchPlayStore),
       _SettingsItem(Icons.share, 'Share App', () {
-        // Tambahkan implementasi share jika diperlukan
       }),
       _SettingsItem(Icons.email, 'Contact Support', () {
         Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactSupportPage()));

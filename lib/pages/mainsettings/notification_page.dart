@@ -28,8 +28,8 @@ class _NotificationPageState extends State<NotificationPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        // Hapus centerTitle agar title sejajar ke kiri dengan ikon back
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Row(

@@ -30,7 +30,6 @@ class DashboardScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
               child: Row(
@@ -63,7 +62,6 @@ class DashboardScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // How Our Service Works (Image-based)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: ClipRRect(
@@ -78,7 +76,6 @@ class DashboardScreen extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            // CTA (Schedule Now Section with Button on Image)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Stack(
@@ -135,14 +132,12 @@ class DashboardScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Logo kiri
-                      Image.asset('assets/images/secondlogo.png', height: 48),
+                      Image.asset('assets/images/secondlogo.png', height: 90),
 
-                      // Ikon sosial kanan (tumpuk)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          _buildIconWithText(FontAwesomeIcons.whatsapp, '+62 857-111-222'),
+                          _buildIconWithText(FontAwesomeIcons.whatsapp, '+62 812-3456-7890'),
                           const SizedBox(height: 12),
                           _buildIconWithText(FontAwesomeIcons.facebook, 'Kuyup Jelantah'),
                         ],
@@ -154,7 +149,7 @@ class DashboardScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   const Center(
                     child: Text(
-                      '© 2025 Kuyup Jelantah, All Rights Reserved',
+                      '© 2025 Kuyup Jelantah, Adam Pratama',
                       style: TextStyle(fontSize: 12, color: Colors.black54),
                     ),
                   ),

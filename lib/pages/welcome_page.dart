@@ -10,18 +10,15 @@ class WelcomePage extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Image.asset(
             'assets/images/welcome.jpg',
             fit: BoxFit.cover,
           ),
 
-          // Overlay gelap
           Container(
             color: Colors.black.withOpacity(0.4),
           ),
 
-          // Logo di pojok kiri atas
           Positioned(
             top: 40,
             left: 24,
@@ -31,7 +28,6 @@ class WelcomePage extends StatelessWidget {
             ),
           ),
 
-          // Teks utama di tengah
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -53,7 +49,6 @@ class WelcomePage extends StatelessWidget {
             ),
           ),
 
-          // Tombol Continue di pojok kanan bawah
           Positioned(
             bottom: 30,
             right: 30,

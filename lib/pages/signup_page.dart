@@ -237,7 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () {}, // Google sign in belum diaktifkan
+                    onPressed: () {},
                     icon: Image.asset('assets/images/google_logo.png', height: 24),
                     label: const Text('Sign Up with Google', style: TextStyle(color: Colors.black)),
                     style: OutlinedButton.styleFrom(

@@ -157,7 +157,7 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
 
               const SizedBox(height: 20),
-              const Text('Full Address', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Address', style: TextStyle(fontWeight: FontWeight.bold)),
               _buildSemiTransparentTextField(controller: _addressController),
 
               const SizedBox(height: 8),
@@ -361,7 +361,7 @@ class _SchedulePageState extends State<SchedulePage> {
           children: [
             const Text('Summary', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange, fontSize: 16)),
             const SizedBox(height: 6),
-            Text('Pick-up address:\n${_addressController.text}, ${_cityController.text}', style: const TextStyle(color: Colors.white)),
+            Text('Pick-up address:\n${_addressController.text}, ${_cityController.text}, ${_provinceController.text}, ${_postalController.text}', style: const TextStyle(color: Colors.white)),
             const SizedBox(height: 10),
             Text(
               'Will be taken on:\n${DateFormat('EEEE, dd MMMM yyyy').format(_selectedDate)} ${_selectedTime.format(context)} WIB',
