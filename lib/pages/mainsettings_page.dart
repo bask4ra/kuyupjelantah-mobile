@@ -1,23 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'settings_page.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:kuyupjelantah/pages/mainsettings/contact_support_page.dart';
+import 'package:kuyupjelantah/pages/mainsettings/notification_page.dart';
+import 'package:kuyupjelantah/pages/settings_page.dart';
+import 'package:kuyupjelantah/pages/welcome_page.dart';
 
 class MainSettingsPage extends StatelessWidget {
   const MainSettingsPage({super.key});
 
+  Future<void> _launchPlayStore() async {
+    final Uri playStoreUri = Uri.parse(
+      'https://play.google.com/store/apps/details?id=com.kuyup.jelantah',
+    );
+    if (!await launchUrl(playStoreUri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $playStoreUri';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<_SettingsItem> items = [
-      _SettingsItem(Icons.person, 'Account', () => Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const SettingsPage()))),
-      _SettingsItem(Icons.notifications, 'Notification', () {}),
-      _SettingsItem(Icons.star, 'Rate App', () {}),
-      _SettingsItem(Icons.share, 'Share App', () {}),
-      _SettingsItem(Icons.email, 'Contact Support', () {}),
+      _SettingsItem(Icons.person, 'Account', () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsPage()));
+      }),
+      _SettingsItem(Icons.notifications, 'Notification', () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationPage()));
+      }),
+      _SettingsItem(Icons.star, 'Rate App', _launchPlayStore),
+      _SettingsItem(Icons.share, 'Share App', () {
+        // Tambahkan implementasi share jika diperlukan
+      }),
+      _SettingsItem(Icons.email, 'Contact Support', () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactSupportPage()));
+      }),
       _SettingsItem(Icons.logout, 'Sign Out', () async {
         await FirebaseAuth.instance.signOut();
         if (context.mounted) {
-          Navigator.pushReplacementNamed(context, '/login');
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const WelcomePage()),
+                (route) => false,
+          );
         }
       }),
     ];
@@ -28,7 +52,10 @@ class MainSettingsPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text('Settings', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Settings',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none),

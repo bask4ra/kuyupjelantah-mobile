@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kuyupjelantah/pages/faqs_page.dart';
 import 'package:kuyupjelantah/pages/mainsettings_page.dart';
 import 'package:kuyupjelantah/pages/schedule_page.dart';
 import 'package:kuyupjelantah/pages/settings_page.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => const SettingsPage(),
         '/main-settings': (context) => const MainSettingsPage(),
         '/schedule': (context) => const SchedulePage(),
+        '/faqscreen': (context) => const FAQsPage(),
       },
     );
   }

@@ -93,7 +93,13 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Settings', style: TextStyle(color: Colors.black)),
+        title: const Text(
+          ' Account Settings',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold, // Bold title
+          ),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),

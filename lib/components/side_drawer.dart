@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kuyupjelantah/pages/welcome_page.dart';
 import '../pages/login_page.dart';
 
 class SideDrawer extends StatefulWidget {
@@ -97,13 +98,15 @@ class _SideDrawerState extends State<SideDrawer> {
             Navigator.pushNamed(context, '/main-settings');
           }),
 
-          drawerItem(context, Icons.help_outline, 'FAQs'),
+          drawerItem(context, Icons.help_outline, 'FAQs', onTap: () {
+            Navigator.pushNamed(context, '/faqscreen');
+          }),
           drawerItem(context, Icons.logout, 'Sign Out', onTap: () async {
             await FirebaseAuth.instance.signOut();
             if (context.mounted) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => const LoginPage()),
+                MaterialPageRoute(builder: (_) => const WelcomePage()),
               );
             }
           }),
