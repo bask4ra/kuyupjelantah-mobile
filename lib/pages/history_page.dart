@@ -43,11 +43,11 @@ class _HistoryPageState extends State<HistoryPage> {
           amount: (data['amount'] as num).toInt(),
           category: data['category'] ?? 'Income',
           date: ts,
-          address: data['address'],
-          city: data['city'],
-          province: data['province'],
-          postalCode: data['postalCode'],
-          phone: data['phone'],
+          address: data['address'] ?? '-',
+          city: data['city'] ?? '-',
+          province: data['province'] ?? '-',
+          postalCode: data['postalCode'] ?? '-',
+          phone: data['phone'] ?? '-',
         );
       }).toList();
       _isLoading = false;
@@ -212,6 +212,10 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   void _showReceipt(TransactionData d) {
+    const int adminFee = 2500;
+    final int total = d.amount;
+    final int liter = ((total + adminFee) / 10000).round();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -223,7 +227,7 @@ class _HistoryPageState extends State<HistoryPage> {
             const SizedBox(height: 10),
             Image.asset('assets/images/water-bottle.png', height: 60),
             const SizedBox(height: 8),
-            Text('${d.amount} Liter', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange)),
+            Text('$liter Liter', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange)),
           ],
         ),
         content: Column(
@@ -232,14 +236,15 @@ class _HistoryPageState extends State<HistoryPage> {
           children: [
             const Text('Summary', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange, fontSize: 16)),
             const SizedBox(height: 6),
-            Text('Pick-up address:\n${d.address}, ${d.city}', style: const TextStyle(color: Colors.white)),
+            Text('Pick-up address:\n${d.address}, ${d.city}, ${d.province}, ${d.postalCode}', style: const TextStyle(color: Colors.white)),
             const SizedBox(height: 10),
             Text('Will be taken on:\n${DateFormat('EEEE, dd MMMM yyyy').format(d.date)}', style: const TextStyle(color: Colors.white)),
             const SizedBox(height: 10),
-            Text('Total Amount: ${d.amount} Liter', style: const TextStyle(color: Colors.white)),
+            Text('Total Amount: $liter Liter', style: const TextStyle(color: Colors.white)),
             const SizedBox(height: 16),
             const Text('Total Paid', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange)),
-            Text('Total: Rp${d.amount}', style: const TextStyle(color: Colors.white)),
+            Text('Total: Rp $total', style: const TextStyle(color: Colors.white)),
+            const Text('Admin Fee: Rp 2500', style: TextStyle(color: Colors.white)),
           ],
         ),
         actions: [
@@ -251,7 +256,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
-              child: const Text('Done', style: TextStyle(color: Colors.white)),
+              child: const Text('Close', style: TextStyle(color: Colors.white)),
             ),
           ),
         ],

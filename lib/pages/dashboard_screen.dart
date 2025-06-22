@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../components/side_drawer.dart';
+import 'schedule_page.dart'; // Import halaman SchedulePage
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -105,7 +106,10 @@ class DashboardScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          // TODO: Navigasi ke halaman Schedule
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SchedulePage()),
+                          );
                         },
                         child: const Text(
                           'Schedule Now',
@@ -126,34 +130,32 @@ class DashboardScreen extends StatelessWidget {
               color: const Color(0xFFFFF6D4),
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Logo kiri
                       Image.asset('assets/images/secondlogo.png', height: 48),
-                      const SizedBox(width: 16),
+
+                      // Ikon sosial kanan (tumpuk)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          _buildIconWithText(FontAwesomeIcons.whatsapp, '+62 857-111-222'),
+                          const SizedBox(height: 12),
+                          _buildIconWithText(FontAwesomeIcons.facebook, 'Kuyup Jelantah'),
+                        ],
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: const [
-                      FaIcon(FontAwesomeIcons.whatsapp), SizedBox(width: 8),
-                      Text('+62 857-111-222'),
-                    ],
-                  ),
+                  const SizedBox(height: 24),
+                  const Divider(thickness: 1),
                   const SizedBox(height: 8),
-                  Row(
-                    children: const [
-                      FaIcon(FontAwesomeIcons.facebook), SizedBox(width: 8),
-                      Text('Kuyup Jelantah')
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Divider(),
                   const Center(
                     child: Text(
                       '© 2025 Kuyup Jelantah, All Rights Reserved',
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
                     ),
                   ),
                 ],
@@ -186,6 +188,27 @@ class DashboardScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  static Widget _buildIconWithText(IconData icon, String text) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          child: FaIcon(icon, size: 16, color: Colors.black),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: const TextStyle(color: Colors.black),
+        ),
+      ],
     );
   }
 }

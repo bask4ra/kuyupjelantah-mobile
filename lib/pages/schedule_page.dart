@@ -157,7 +157,7 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
 
               const SizedBox(height: 20),
-              const Text('Address', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('Full Address', style: TextStyle(fontWeight: FontWeight.bold)),
               _buildSemiTransparentTextField(controller: _addressController),
 
               const SizedBox(height: 8),
